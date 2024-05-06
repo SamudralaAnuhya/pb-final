@@ -1,0 +1,39 @@
+/* LastFiveExpenses.css */
+
+.last-five-expenses {
+    margin-top: 20px;
+}
+
+.last-five-expenses table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.last-five-expenses th,
+.last-five-expenses td {
+    padding: 8px;
+    text-align: left;
+}
+
+.last-five-expenses th {
+    background-color: #f2f2f2; /* Light gray background for header */
+}
+
+.last-five-expenses tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Lighter background for even rows */
+}
+
+.last-five-expenses button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff; /* Blue button color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.last-five-expenses button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

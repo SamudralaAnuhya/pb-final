@@ -8,6 +8,9 @@ import {expressjwt} from "express-jwt";
 import cors from "cors";
 import connectDB from "./config/database.js";
 import BudgetRoute from "./routes/BudgetRoute.js";
+import UserRoute from "./routes/UserRoute.js";
+import expenseRoute from "./routes/ExpenseRoute.js";
+import incomeRoute from "./routes/IncomeRoute.js";
 
 app.use(cors());
 
@@ -25,4 +28,7 @@ app.get("/", (req, res) => {
 
 connectDB();
 app.use("/budget", BudgetRoute);
+app.use("/user", UserRoute);
+app.use("/expenses", expenseRoute);
+app.use("/income", incomeRoute)
 

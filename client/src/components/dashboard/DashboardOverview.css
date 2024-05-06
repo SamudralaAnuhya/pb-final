@@ -1,0 +1,27 @@
+/* DashboardOverview.css */
+
+.dashboard-overview {
+    margin-bottom: 30px;
+}
+
+.dashboard-overview h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.metrics div {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.metrics div h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
