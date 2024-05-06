@@ -23,7 +23,6 @@ app.listen(port, () => {
 
 app.get("/", (req, res) => {
     console.log("Welcome to the server");
-    // res.body("Welcome to the server");
 });
 
 connectDB();

@@ -2,6 +2,9 @@ import express, { json } from "express";
 import bcrypt from "bcrypt";
 const router = express.Router();
 import UserModel from '../models/user.js';
+import jwt from "jsonwebtoken";
+const JWT_SECRET = 'mysecret';
+const JWT_REFRESH_SECRET = 'refreshsecret';
 
 // signup route
 router.post('/signup', async (req, res) => {
@@ -51,11 +54,38 @@ router.post('/signin', async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
+        const accessToken = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '10s' });
+        const refreshToken = jwt.sign({ userId: user._id }, JWT_REFRESH_SECRET, { expiresIn: '60s' });
+
         // Authentication successful
-        res.json({ message: 'Signin successful' });
+        res.json({ message: 'Signin successful', accessToken, refreshToken });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.post('/refresh-token', async (req, res) => {
+    const { refreshToken } = req.body;
+
+    try {
+        // Verify the refresh token
+        const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+
+        // Find the user based on the user ID from the decoded refresh token
+        const user = await UserModel.findById(decoded.userId);
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid refresh token' });
+        }
+
+        // Generate a new access token
+        const accessToken = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '10s' });
+
+        res.json({ accessToken });
+    } catch (error) {
+        console.error(error);
+        res.status(401).json({ message: 'Invalid refresh token' });
     }
 });
 

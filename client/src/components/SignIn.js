@@ -30,7 +30,7 @@ const SignIn = () => {
                     password: data.get("password"),
                 }
             );
-            setUserToken(response.data.token);
+            setUserToken(response.data.accessToken);
             navigate("/profile");
         } catch (error) {}
     };
