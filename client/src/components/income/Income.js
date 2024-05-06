@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api';
 import './Income.css';
+import axios from "axios";
 
 const Income = () => {
     const [incomes, setIncomes] = useState([]);
@@ -18,7 +19,9 @@ const Income = () => {
 
     const fetchIncomes = async () => {
         try {
-            const response = await api.get('/income');
+            const userString = localStorage.getItem('user');
+            const user = JSON.parse(userString);
+            const response = await api.get(`/income/${user._id}`);
             setIncomes(response.data);
         } catch (error) {
             console.error('Error fetching incomes:', error);
@@ -36,12 +39,17 @@ const Income = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await api.post('/income/add', newIncome);
-            setNewIncome({
-                Amount: '',
-                Type: '',
-                Month: '',
-            });
+            const userString = localStorage.getItem('user');
+            console.log("userString", userString);
+            const user = JSON.parse(userString);
+            const incomeData = {
+                ...newIncome,
+                user: user._id,
+            };
+            await axios.post('http://localhost:3000/income/add', incomeData);
+
+            // await api.post('/income/add', { incomeData });
+            setIncomes((prevExpenses) => [...prevExpenses, incomeData]);
             fetchIncomes();
         } catch (error) {
             console.error('Error adding income:', error);

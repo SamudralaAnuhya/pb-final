@@ -19,8 +19,6 @@ const ListExpenses = () => {
         // Fetch expenses from the backend API
         const fetchExpenses = async () => {
             try {
-                // const response = await axios.get('http://localhost:3000/expenses');
-
                 const userString = localStorage.getItem('user');
                 const user = JSON.parse(userString);
                 const response = await axios.get(`http://localhost:3000/expenses/${user._id}`);

@@ -3,17 +3,18 @@ import express, { json } from "express";
 const ierouter = express.Router();
 
 
-ierouter.get("/", async (req, res) => {
-    const budget = await IncomeModel.find();
-    res.send(budget);
+ierouter.get("/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    const income = await IncomeModel.find({ user: userId });
+    res.send(income);
 });
 
 ierouter.post("/add", async (req, res) => {
-    const budget = new IncomeModel(req.body);
+    const income = new IncomeModel(req.body);
 
     try {
-        await budget.save();
-        res.send(budget);
+        await income.save();
+        res.send(income);
     } catch (error) {
         res.status(400).send(error);
     }
