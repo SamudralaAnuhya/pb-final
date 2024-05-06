@@ -1,9 +1,57 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { Navigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 import axios from 'axios';
+import { useIdleTimer } from 'react-idle-timer';
 
 const ProtectedRoute = ({ element: Component, ...rest }) => {
+
+    const idleTimerRef = useRef(null);
+    const IDLE_TIMEOUT = 50000; // 30 minutes in milliseconds
+    const ALERT_TIMEOUT = IDLE_TIMEOUT / 2; // Half of the idle timeout
+    const [showAlert, setShowAlert] = useState(false);
+
+    const onActive = () => {
+        // User is active again
+        setShowAlert(false);
+    };
+
+    const onAction = () => {
+        // User performed an action (e.g., moved the mouse, pressed a key)
+        setShowAlert(false);
+    };
+    const onIdle = () => {
+        // User has been idle for the specified timeout period
+        // Perform logout actions here
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/sign-in';
+    };
+    const { getRemainingTime, getLastActiveTime, reset } = useIdleTimer({
+        timeout: IDLE_TIMEOUT,
+        onIdle: onIdle,
+        onActive: onActive,
+        onAction: onAction,
+        debounce: 500,
+    });
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            const remainingTime = getRemainingTime();
+            if (remainingTime <= ALERT_TIMEOUT && !showAlert) {
+                setShowAlert(true);
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, [getRemainingTime, showAlert]);
+
+    const handleStayLoggedIn = () => {
+        setShowAlert(false);
+        reset(); // Reset the idle timer
+    };
     const isAuthenticated = () => {
         const token = localStorage.getItem('token');
 
