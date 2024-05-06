@@ -3,7 +3,7 @@ import express, { json } from "express";
 const erouter = express.Router();
 
 
-erouter.get("/", async (req, res) => {
+erouter.get("/:userId", async (req, res) => {
     const userId = req.params.userId;
     const expenses = await ExpenseModel.find({ user: userId });
     res.send(expenses);
