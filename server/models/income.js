@@ -6,6 +6,7 @@ const IncomeSchema = new mongoose.Schema(
         Amount: { type: Number, required: true },
         Type: { type: String, required: true },
         Month: { type: String, required: true },
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     },
     { collection: "income" }
 );

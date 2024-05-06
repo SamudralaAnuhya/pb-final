@@ -31,6 +31,7 @@ const SignIn = () => {
                 }
             );
             setUserToken(response.data.accessToken);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
             navigate("/profile");
         } catch (error) {}
     };

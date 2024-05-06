@@ -4,8 +4,9 @@ const erouter = express.Router();
 
 
 erouter.get("/", async (req, res) => {
-    const budget = await ExpenseModel.find();
-    res.send(budget);
+    const userId = req.params.userId;
+    const expenses = await ExpenseModel.find({ user: userId });
+    res.send(expenses);
 });
 
 erouter.post("/add", async (req, res) => {

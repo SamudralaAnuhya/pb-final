@@ -57,8 +57,13 @@ router.post('/signin', async (req, res) => {
         const accessToken = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '10s' });
         const refreshToken = jwt.sign({ userId: user._id }, JWT_REFRESH_SECRET, { expiresIn: '60s' });
 
-        // Authentication successful
-        res.json({ message: 'Signin successful', accessToken, refreshToken });
+        const userObject = {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+        };
+
+        res.json({ message: 'Signin successful', accessToken, refreshToken, user: userObject });
 
     } catch (error) {
         console.error(error);

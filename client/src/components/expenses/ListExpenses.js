@@ -19,7 +19,11 @@ const ListExpenses = () => {
         // Fetch expenses from the backend API
         const fetchExpenses = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/expenses');
+                // const response = await axios.get('http://localhost:3000/expenses');
+
+                const userString = localStorage.getItem('user');
+                const user = JSON.parse(userString);
+                const response = await axios.get(`http://localhost:3000/expenses/${user._id}`);
                 setExpenses(response.data);
             } catch (error) {
                 console.error('Error fetching expenses:', error);
@@ -85,8 +89,14 @@ const ListExpenses = () => {
     const saveExpense = async () => {
         if (validateForm()) {
             try {
-                await axios.post('http://localhost:3000/expenses/add', newExpense);
-                setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+                const userString = localStorage.getItem('user');
+                const user = JSON.parse(userString);
+                const expenseData = {
+                    ...newExpense,
+                    user: user._id,
+                };
+                await axios.post('http://localhost:3000/expenses/add', expenseData);
+                setExpenses((prevExpenses) => [...prevExpenses, expenseData]);
                 closeAddExpensePopup();
             } catch (error) {
                 console.error('Error saving expense:', error);
