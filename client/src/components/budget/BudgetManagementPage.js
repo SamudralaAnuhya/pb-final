@@ -24,7 +24,7 @@
 //         const userString = localStorage.getItem("user");
 //         const user = JSON.parse(userString);
 //         const response = await axios.get(
-//           `http://localhost:3000/budgets/${user._id}`
+//           `${BASE_URL}:${SERVER_PORT}/budgets/${user._id}`
 //         );
 //         setBudgets(response.data);
 //         calculateRemainingIncome(response.data);
@@ -69,7 +69,7 @@
 //         ...newBudget,
 //         user: user._id,
 //       };
-//       await axios.post("http://localhost:3000/budgets/add", budgetData);
+//       await axios.post("${BASE_URL}:${SERVER_PORT}/budgets/add", budgetData);
 //       setBudgets((prevBudgets) => [...prevBudgets, budgetData]);
 //       calculateRemainingIncome([...budgets, budgetData]);
 //       closeAddBudgetPopup();
@@ -199,7 +199,8 @@ import "chart.js/auto";
 import './BudgetManagementPage.css'
 
 import Header from "../Header";
-
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost';
+const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const BudgetManagementPage = () => {
     const [budgets, setBudgets] = useState([]);
     // const [income, setIncome] = useState(15000);
@@ -221,7 +222,7 @@ const BudgetManagementPage = () => {
                 const userString = localStorage.getItem("user");
                 const user = JSON.parse(userString);
                 const response = await axios.get(
-                    `http://localhost:3000/budgets/${user._id}`
+                    `${BASE_URL}:${SERVER_PORT}/budgets/${user._id}`
                 );
                 setBudgets(response.data);
                 calculateRemainingIncome(response.data);
@@ -238,7 +239,7 @@ const BudgetManagementPage = () => {
             try {
                 const userString = localStorage.getItem("user");
                 const user = JSON.parse(userString);
-                const response = await axios.get(`http://localhost:3000/income/${user._id}`);
+                const response = await axios.get(`${BASE_URL}:${SERVER_PORT}/income/${user._id}`);
 
                 setIncomeData(response.data.totalAmount);
             } catch (error) {
@@ -284,7 +285,7 @@ const BudgetManagementPage = () => {
                 ...newBudget,
                 user: user._id,
             };
-            await axios.post("http://localhost:3000/budgets/add", budgetData);
+            await axios.post(`${BASE_URL}:${SERVER_PORT}/budgets/add`, budgetData);
             setBudgets((prevBudgets) => [...prevBudgets, budgetData]);
             calculateRemainingIncome([...budgets, budgetData]);
             closeAddBudgetPopup();
@@ -377,7 +378,7 @@ const BudgetManagementPage = () => {
             const updatedBudget = {
                 title: newTitle,
             };
-            await axios.put(`http://localhost:3000/budgets/${budgetId}`, updatedBudget);
+            await axios.put(`${BASE_URL}:${SERVER_PORT}/budgets/${budgetId}`, updatedBudget);
             setBudgets((prevBudgets) =>
                 prevBudgets.map((budget) =>
                     budget._id === budgetId ? { ...budget, title: newTitle } : budget

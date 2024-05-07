@@ -5,7 +5,8 @@ import "chart.js/auto";
 import "./ListExpense.css";
 
 import Header from "../Header";
-
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost';
+const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const ListExpenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [incomeData, setIncomeData] = useState([]);
@@ -27,7 +28,7 @@ const ListExpenses = () => {
         const userString = localStorage.getItem("user");
         const user = JSON.parse(userString);
         const response = await axios.get(
-            `http://localhost:3000/expenses/${user._id}`
+            `${BASE_URL}:${SERVER_PORT}/expenses/${user._id}`
         );
         setExpenses(response.data);
         calculateRemainingIncome(response.data);
@@ -44,7 +45,7 @@ const ListExpenses = () => {
       try {
         const userString = localStorage.getItem("user");
         const user = JSON.parse(userString);
-        const response = await axios.get(`http://localhost:3000/income/${user._id}`);
+        const response = await axios.get(`${BASE_URL}:${SERVER_PORT}/income/${user._id}`);
 
         setIncomeData(response.data.totalAmount);
       } catch (error) {
@@ -127,7 +128,7 @@ const ListExpenses = () => {
           user: user._id,
           Amount: parseFloat(newExpense.Amount),
         };
-        await axios.post("http://localhost:3000/expenses/add", expenseData);
+        await axios.post(`${BASE_URL}:${SERVER_PORT}/expenses/add`, expenseData);
         setExpenses((prevExpenses) => [...prevExpenses, expenseData]);
         calculateRemainingIncome([...expenses, expenseData]);
         closeAddExpensePopup();

@@ -2,7 +2,7 @@
 
 const config = {
   development: {
-    apiBaseUrl: 'http://localhost:3000',
+    apiBaseUrl: '${BASE_URL}:${SERVER_PORT}',
   },
   production: {
     apiBaseUrl: '159.65.163.88/api',

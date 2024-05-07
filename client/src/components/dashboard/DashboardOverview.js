@@ -9,6 +9,8 @@ import { createTheme } from "@mui/material";
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 
 const defaultTheme = createTheme();
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost';
+const SERVER_PORT = process.env.SERVER_PORT || 3001;
 
 const DashboardOverview = ({ monthlyExpense, weeklyExpense }) => {
     const [remainingIncome, setRemainingIncome] = useState(0);
@@ -46,7 +48,7 @@ const DashboardOverview = ({ monthlyExpense, weeklyExpense }) => {
 
                 const userString = localStorage.getItem("user");
                 const user = JSON.parse(userString);
-                const response = await axios.get(`http://localhost:3000/income/${user._id}`);
+                const response = await axios.get(`${BASE_URL}:${SERVER_PORT}/income/${user._id}`);
 
                 setRemainingIncome(response.data.totalAmount);
             } catch (error) {
@@ -65,7 +67,7 @@ const DashboardOverview = ({ monthlyExpense, weeklyExpense }) => {
         try {
             const userString = localStorage.getItem('user');
             const user = JSON.parse(userString);
-            const response = await axios.get(`http://localhost:3000/income/view/${user._id}`);
+            const response = await axios.get(`${BASE_URL}:${SERVER_PORT}/income/view/${user._id}`);
             setIncomes(response.data);
         } catch (error) {
             console.error('Error fetching incomes:', error);
@@ -88,7 +90,7 @@ const DashboardOverview = ({ monthlyExpense, weeklyExpense }) => {
                 ...newIncome,
                 user: user._id,
             };
-            await axios.post('http://localhost:3000/income/add', incomeData);
+            await axios.post(`${BASE_URL}:${SERVER_PORT}/income/add`, incomeData);
             setNewIncome({ Amount: '', Type: '', Month: '' }); // Reset newIncome state
             fetchIncomes(); // Refetch incomes to update the list
         } catch (error) {
@@ -103,7 +105,7 @@ const DashboardOverview = ({ monthlyExpense, weeklyExpense }) => {
                 const userString = localStorage.getItem("user");
                 const user = JSON.parse(userString);
                 const response = await axios.get(
-                    `http://localhost:3000/expenses/total/${user._id}`
+                    `${BASE_URL}:${SERVER_PORT}/expenses/total/${user._id}`
                 );
                 setExpenses(response.data.totalAmount);
             } catch (error) {
@@ -121,7 +123,7 @@ const DashboardOverview = ({ monthlyExpense, weeklyExpense }) => {
                 const userString = localStorage.getItem("user");
                 const user = JSON.parse(userString);
                 const response = await axios.get(
-                    `http://localhost:3000/budget/total/${user._id}`
+                    `${BASE_URL}:${SERVER_PORT}/budget/total/${user._id}`
                 );
                 setBudget(response.data.totalAmount);
             } catch (error) {

@@ -13,6 +13,9 @@ import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import { Alert, AlertTitle } from "@mui/material";
 
+
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost';
+const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const defaultTheme = createTheme();
 
 const SignUp = () => {
@@ -23,7 +26,7 @@ const SignUp = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:3000/user/signup",
+                `${BASE_URL}:${SERVER_PORT}/user/signup`,
                 {
                     username: data.get("username"),
                     email: data.get("email"),

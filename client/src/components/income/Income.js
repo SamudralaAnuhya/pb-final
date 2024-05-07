@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost';
+const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const Income = () => {
     const [incomes, setIncomes] = useState([]);
     const [newIncome, setNewIncome] = useState({
@@ -17,7 +18,7 @@ const Income = () => {
         try {
             const userString = localStorage.getItem('user');
             const user = JSON.parse(userString);
-            const response = await axios.get(`http://localhost:3000/income/view/${user._id}`);
+            const response = await axios.get(`${BASE_URL}:${SERVER_PORT}/income/view/${user._id}`);
             setIncomes(response.data);
         } catch (error) {
             console.error('Error fetching incomes:', error);
@@ -41,7 +42,7 @@ const Income = () => {
                 ...newIncome,
                 user: user._id,
             };
-            await axios.post('http://localhost:3000/income/add', incomeData);
+            await axios.post(`${BASE_URL}:${SERVER_PORT}/income/add`, incomeData);
             setNewIncome({ Amount: '', Type: '', Month: '' }); // Reset newIncome state
             fetchIncomes(); // Refetch incomes to update the list
         } catch (error) {

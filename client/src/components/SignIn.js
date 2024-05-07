@@ -14,6 +14,8 @@ import axios from "axios";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost';
+const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const defaultTheme = createTheme();
 
 const SignIn = () => {
@@ -38,13 +40,16 @@ const SignIn = () => {
         }
 
 
-
         try {
             const response = await axios.post(
-                "http://localhost:3000/user/signin",
+                `${BASE_URL}:${SERVER_PORT}/user/signin`,
                 {
                     username: username,
                     password: password,
+                },
+                {
+                    headers: {
+                    },
                 }
             );
             setUserToken(response.data.accessToken);

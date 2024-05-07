@@ -18,6 +18,8 @@ import img from "../assets/img/budget.jpg";
 import img2 from "../assets/img/profile.jpg";
 const defaultTheme = createTheme();
 
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost';
+const SERVER_PORT = process.env.SERVER_PORT || 3001;
 const Profile = () => {
     const [userData, setUserData] = useState({
         username: "",
@@ -26,7 +28,7 @@ const Profile = () => {
     const token = getUserTokenFromStorage();
     useEffect(() => {
         axios
-            .get(`http://localhost:3000/user/`)
+            .get(`${BASE_URL}:${SERVER_PORT}/user/`)
             .then((response) => {
                 setUserData(response.data);
             })
