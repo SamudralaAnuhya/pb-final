@@ -103,7 +103,7 @@ const DashboardOverview = ({ monthlyExpense, weeklyExpense }) => {
                 const userString = localStorage.getItem("user");
                 const user = JSON.parse(userString);
                 const response = await axios.get(
-                    `https://pb-final-api.onrender.com:3000/expenses/total/${user._id}`
+                    `http://localhost:3000/expenses/total/${user._id}`
                 );
                 setExpenses(response.data.totalAmount);
             } catch (error) {
@@ -121,7 +121,7 @@ const DashboardOverview = ({ monthlyExpense, weeklyExpense }) => {
                 const userString = localStorage.getItem("user");
                 const user = JSON.parse(userString);
                 const response = await axios.get(
-                    `https://pb-final-api.onrender.com:3000/budget/total/${user._id}`
+                    `http://localhost:3000/budget/total/${user._id}`
                 );
                 setBudget(response.data.totalAmount);
             } catch (error) {
