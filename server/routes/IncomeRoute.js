@@ -6,8 +6,25 @@ const ierouter = express.Router();
 ierouter.get("/:userId", async (req, res) => {
     const userId = req.params.userId;
     const income = await IncomeModel.find({ user: userId });
-    res.send(income);
+
+    const totalAmount = income.reduce((total, currentIncome) => total + currentIncome.Amount, 0);
+
+    res.send({totalAmount });
 });
+
+ierouter.get("/", async (req, res) => {
+    const budget = await IncomeModel.find();
+    res.send(budget);
+});
+
+ierouter.get("/view/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    const income = await IncomeModel.find({ user: userId });
+
+    res.send({income });
+});
+
+
 
 ierouter.post("/add", async (req, res) => {
     const income = new IncomeModel(req.body);

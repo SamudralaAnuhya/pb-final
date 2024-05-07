@@ -26,7 +26,7 @@ const Profile = () => {
     const token = getUserTokenFromStorage();
     useEffect(() => {
         axios
-            .get(`http://localhost:3000/user/${token}`)
+            .get(`http://localhost:3000/user/`)
             .then((response) => {
                 setUserData(response.data);
             })
@@ -74,22 +74,6 @@ const Profile = () => {
                                 fullWidth
                                 disabled
                                 value={userData.username}
-                            />
-                        </Box>
-                        <Box p={2}>
-                            <TextField
-                                label="Name"
-                                fullWidth
-                                disabled
-                                value={userData.name}
-                            />
-                        </Box>
-                        <Box p={2}>
-                            <TextField
-                                label="Surname"
-                                fullWidth
-                                disabled
-                                value={userData.surname}
                             />
                         </Box>
                         <Box p={2}>

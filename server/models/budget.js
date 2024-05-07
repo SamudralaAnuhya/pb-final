@@ -1,16 +1,11 @@
 import mongoose from "mongoose";
 
-const colorValidator = (v) => /^#([0-9a-f]{3}){1,2}$/i.test(v);
 const BudgetSchema = new mongoose.Schema(
     {
         title: { type: String, required: true },
         budget: { type: Number, required: true },
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-        color: {
-            type: String,
-            validator: [colorValidator, "Invalid color"],
-            required: true,
-        },
+
     },
     { collection: "budgetData" }
 );

@@ -20,4 +20,13 @@ erouter.post("/add", async (req, res) => {
     }
 });
 
+erouter.get("/total/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    const expenses = await ExpenseModel.find({ user: userId });
+
+    const totalAmount = expenses.reduce((total, expense) => total + expense.Amount, 0);
+
+    res.json({ totalAmount });
+});
+
 export default erouter;

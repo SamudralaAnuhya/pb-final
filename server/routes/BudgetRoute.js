@@ -19,4 +19,12 @@ router.post("/add", async (req, res) => {
     }
 });
 
+router.get("/total/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    const budgets = await BudgetModel.find({ user: userId });
+
+    const totalAmount = budgets.reduce((total, budget) => total + budget.budget, 0);
+
+    res.json({ totalAmount });
+});
 export default router;

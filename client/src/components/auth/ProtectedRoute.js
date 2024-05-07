@@ -7,8 +7,8 @@ import { useIdleTimer } from 'react-idle-timer';
 const ProtectedRoute = ({ element: Component, ...rest }) => {
 
     const idleTimerRef = useRef(null);
-    const IDLE_TIMEOUT = 50000; // 30 minutes in milliseconds
-    const ALERT_TIMEOUT = IDLE_TIMEOUT / 2; // Half of the idle timeout
+    const IDLE_TIMEOUT = 60000;
+    const ALERT_TIMEOUT = IDLE_TIMEOUT / 2;
     const [showAlert, setShowAlert] = useState(false);
 
     const onActive = () => {

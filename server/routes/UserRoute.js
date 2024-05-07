@@ -37,6 +37,33 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+
+// Sign in route
+router.post('/', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Check if user exists
+        const user = await UserModel.findOne({ username });
+        if (!user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
+        const userObject = {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+        };
+
+        res.json({ message: 'retrieved user data', user: userObject });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
 // Sign in route
 router.post('/signin', async (req, res) => {
     try {
@@ -93,5 +120,63 @@ router.post('/refresh-token', async (req, res) => {
         res.status(401).json({ message: 'Invalid refresh token' });
     }
 });
+
+
+router.post('/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Check if user exists
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Generate a unique token for password reset
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
+
+        // Save the user with the reset token
+        await user.save();
+
+        // Send an email to the user with instructions for password reset
+        // You can use a library like nodemailer to send emails
+
+        res.status(200).json({ message: 'Password reset instructions sent to your email' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.post('/reset-password', async (req, res) => {
+    try {
+        const { email, resetToken, newPassword } = req.body;
+
+        // Find the user by email and reset token
+        const user = await UserModel.findOne({ email, resetPasswordToken: resetToken, resetPasswordExpires: { $gt: Date.now() } });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired reset token' });
+        }
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the user's password and clear the reset token
+        user.password = hashedPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: 'Password reset successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 export default router;

@@ -3,7 +3,7 @@ import { useIdleTimer } from 'react-idle-timer';
 import Modal from './Modal';
 
 const IdleModal = () => {
-    const IDLE_TIMEOUT = 50000; // 50 seconds in milliseconds
+    const IDLE_TIMEOUT = 60000; // 50 seconds in milliseconds
     const ALERT_TIMEOUT = IDLE_TIMEOUT / 2; // Half of the idle timeout
 
     const [showAlert, setShowAlert] = useState(false);
@@ -14,7 +14,7 @@ const IdleModal = () => {
         // Perform logout actions here
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/sign-in';
+        window.location.href = '/';
     };
 
     const onActive = () => {

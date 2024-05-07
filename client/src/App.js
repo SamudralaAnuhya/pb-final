@@ -11,6 +11,7 @@ import Reports from "./components/Reports";
 import ListExpenses from "./components/expenses/ListExpenses";
 import Income from "./components/income/Income";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import BudgetManagementPage from "./components/budget/BudgetManagementPage";
 
 function App() {
     return (
@@ -20,8 +21,7 @@ function App() {
 
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/sign-up" element={<SignUp />} />
-                {/*<Route path="/home" element={<HomePage />} />*/}
-                <Route path="/home" element={<ProtectedRoute element={HomePage} />} />
+                <Route path="/home" element={<HomePage />} />
                 {/*<Route path="/profile" element={<Profile />} />*/}
                 {/*<Route path="/change_password" element={<ResetCred />} />*/}
                 {/*<Route path="/reports" element={<Reports />} />*/}
@@ -36,6 +36,7 @@ function App() {
                 <Route path="/dashboard" element={<ProtectedRoute element={DashboardOverview} />} />
                 <Route path="/expense" element={<ProtectedRoute element={ListExpenses} />} />
                 <Route path="/income" element={<ProtectedRoute element={Income} />} />
+                <Route path="/categories" element={<ProtectedRoute element={BudgetManagementPage} />} />
 
             </Routes>
         </BrowserRouter>

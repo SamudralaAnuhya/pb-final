@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ExpenseSchema = new mongoose.Schema(
+const BudgetSchemas = new mongoose.Schema(
     {
         Description: { type: String, required: true },
         Category: { type: String, required: true },
@@ -8,8 +8,8 @@ const ExpenseSchema = new mongoose.Schema(
         Date: { type: Date, required: true, default: Date.now },
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     },
-    { collection: "expense" }
+    { collection: "budgets" }
 );
 
-const ExpenseModel = mongoose.model("Expense", ExpenseSchema);
-export default ExpenseModel;
+const BudgetsModel = mongoose.model("Budgets", BudgetSchemas);
+export default BudgetsModel;

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from 'react';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -18,22 +18,45 @@ const defaultTheme = createTheme();
 
 const SignIn = () => {
     const navigate = useNavigate();
+    const [validationError, setValidationError] = useState("");
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+
+        const username = data.get("username");
+        const password = data.get("password");
+
+        // Reset validation error message
+        setValidationError("");
+
+        // Validation checks
+        if (!username || !password) {
+            // Required fields not filled out
+            setValidationError("Username and password are required.");
+            return;
+        }
 
         try {
             const response = await axios.post(
                 "http://localhost:3000/user/signin",
                 {
-                    username: data.get("username"),
-                    password: data.get("password"),
+                    username: username,
+                    password: password,
                 }
             );
             setUserToken(response.data.accessToken);
             localStorage.setItem("user", JSON.stringify(response.data.user));
-            navigate("/profile");
-        } catch (error) {}
+            navigate("/dashboard");
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                // Authentication failed
+                setValidationError("Invalid username or password.");
+            } else {
+                // Network error or other server error
+                setValidationError("An error occurred. Please try again later.");
+            }
+        }
     };
 
     return (
@@ -74,6 +97,11 @@ const SignIn = () => {
                             name="password"
                             type="password"
                         />
+                        {validationError && (
+                            <Typography variant="body2" color="error">
+                                {validationError}
+                            </Typography>
+                        )}
                         <Button
                             type="submit"
                             fullWidth
